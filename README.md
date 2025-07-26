@@ -1,1 +1,1 @@
-A Booking Application used to book the hote;s using MERN stack.
+A Booking Application used to book the hotels using MERN stack.
