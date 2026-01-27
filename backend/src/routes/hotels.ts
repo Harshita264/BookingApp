@@ -5,7 +5,10 @@ import { param, validationResult } from "express-validator";
 import Stripe from "stripe";
 import verifyToken from "../middleware/auth";
 
-const stripe = new Stripe(process.env.STRIPE_API_KEY as string);
+
+const stripe = new Stripe(process.env.STRIPE_API_KEY as string, {
+  apiVersion: "2023-10-16",
+});
 
 const router = express.Router();
 
@@ -57,31 +60,51 @@ router.get("/search", async (req: Request, res: Response) => {
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const hotels = await Hotel.find().sort("-lastUpdated");
-    res.json(hotels);
+    const page = Number(req.query.page) || 1;
+    const pageSize = 6;
+    const skip = (page - 1) * pageSize;
+
+    const hotels = await Hotel.find()
+      .sort({ lastUpdated: -1 })
+      .skip(skip)
+      .limit(pageSize);
+
+    const total = await Hotel.countDocuments();
+
+    res.json({
+      data: hotels,
+      pagination: {
+        total,
+        page,
+        pages: Math.ceil(total / pageSize),
+      },
+    });
   } catch (error) {
-    console.log("error", error);
+    console.error(error);
     res.status(500).json({ message: "Error fetching hotels" });
   }
 });
 
-router.get(
-  "/:id",
-  [param("id").notEmpty().withMessage("Hotel ID is required")],
+  router.get(
+  "/:hotelId",
+  param("hotelId").isMongoId(),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const id = req.params.id.toString();
-
     try {
-      const hotel = await Hotel.findById(id);
+      const hotel = await Hotel.findById(req.params.hotelId);
+
+      if (!hotel) {
+        return res.status(404).json({ message: "Hotel not found" });
+      }
+
       res.json(hotel);
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Error fetching hotel" });
+      res.status(500).json({ message: "Something went wrong" });
     }
   }
 );
@@ -105,7 +128,7 @@ router.post(
       currency: "gbp",
       metadata: {
         hotelId,
-        userId: req.userId,
+        userId: req.userId!,
       },
     });
 
@@ -176,7 +199,17 @@ router.post(
   }
 );
 
-const constructSearchQuery = (queryParams: any) => {
+type SearchQueryParams = {
+  destination?: string;
+  adultCount?: string;
+  childCount?: string;
+  facilities?: string | string[];
+  types?: string | string[];
+  stars?: string | string[];
+  maxPrice?: string;
+};
+
+const constructSearchQuery = (queryParams: SearchQueryParams) => {
   let constructedQuery: any = {};
 
   if (queryParams.destination) {
@@ -224,7 +257,7 @@ const constructSearchQuery = (queryParams: any) => {
 
   if (queryParams.maxPrice) {
     constructedQuery.pricePerNight = {
-      $lte: parseInt(queryParams.maxPrice).toString(),
+      $lte: parseInt(queryParams.maxPrice),
     };
   }
 

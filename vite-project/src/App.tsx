@@ -1,116 +1,44 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Layout from "./layouts/Layout";
-import Register from "./pages/Register";
-import SignIn from "./pages/SignIn";
-import AddHotel from "./pages/AddHotel";
-import { useAppContext } from "./contexts/AppContext";
-import MyHotels from "./pages/MyHotels";
-import EditHotel from "./pages/EditHotel";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+// Public pages
+import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Detail from "./pages/Detail";
+import Register from "./pages/Register";
+import SignIn from "./pages/SignIn";
+
+// Protected pages
+import AddHotel from "./pages/AddHotel";
+import MyHotels from "./pages/MyHotels";
+import EditHotel from "./pages/EditHotel";
 import Booking from "./pages/Booking";
 import MyBookings from "./pages/MyBookings";
-import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import "react-datepicker/dist/react-datepicker.css";
 
 const App = () => {
-  const { isLoggedIn } = useAppContext();
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <Home />
-            </Layout>
-          }
-        />
-        <Route
-          path="/search"
-          element={
-            <Layout>
-              <Search />
-            </Layout>
-          }
-        />
-        <Route
-          path="/detail/:hotelId"
-          element={
-            <Layout>
-              <Detail />
-            </Layout>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <Layout>
-              <Register />
-            </Layout>
-          }
-        />
-        <Route
-          path="/sign-in"
-          element={
-            <Layout>
-              <SignIn />
-            </Layout>
-          }
-        />
+    <Routes>
+      <Route element={<Layout />}>
+        {/* ===== PUBLIC ROUTES ===== */}
+        <Route path="/" element={<Home />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/detail/:hotelId" element={<Detail />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/sign-in" element={<SignIn />} />
 
-        {isLoggedIn && (
-          <>
-            <Route
-              path="/hotel/:hotelId/booking"
-              element={
-                <Layout>
-                  <Booking />
-                </Layout>
-              }
-            />
-
-            <Route
-              path="/add-hotel"
-              element={
-                <Layout>
-                  <AddHotel />
-                </Layout>
-              }
-            />
-            <Route
-              path="/edit-hotel/:hotelId"
-              element={
-                <Layout>
-                  <EditHotel />
-                </Layout>
-              }
-            />
-            <Route
-              path="/my-hotels"
-              element={
-                <Layout>
-                  <MyHotels />
-                </Layout>
-              }
-            />
-            <Route
-              path="/my-bookings"
-              element={
-                <Layout>
-                  <MyBookings />
-                </Layout>
-              }
-            />
-          </>
-        )}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </Router>
+        {/* ===== PROTECTED ROUTES ===== */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/add-hotel" element={<AddHotel />} />
+          <Route path="/my-hotels" element={<MyHotels />} />
+          <Route path="/edit-hotel/:hotelId" element={<EditHotel />} />
+          <Route path="/hotel/:hotelId/booking" element={<Booking />} />
+          <Route path="/my-bookings" element={<MyBookings />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 };
 

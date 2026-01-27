@@ -1,14 +1,26 @@
-const Footer = () =>{
-    return (<div className="bg-blue-800 py-10">
-        <div className="container mx-auto flex justify-between items-center">
-            <span className="text-3xl text-white font-bold tracking-tight">
-                MernHolidays.com
-            </span>
-            <span className="text-white font-bold tracking-tight flex gap-4"></span>
-            <p className="cursor-pointer">Privacy Policy</p>
-            <p className="cursor-pointer">Terms of Servie</p>
+import { Link } from "react-router-dom";
+
+const Footer = () => {
+  return (
+    <footer className="bg-blue-700 text-white mt-16">
+      <div className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center text-sm">
+        {/* LEFT */}
+        <span className="font-semibold">
+            MernHolidays.com
+        </span>
+
+        {/* RIGHT */}
+        <div className="flex gap-6">
+          <Link to="/privacy-policy" className="hover:underline">
+            Privacy Policy
+          </Link>
+          <Link to="/terms" className="hover:underline">
+            Terms of Service
+          </Link>
         </div>
-    </div>
-    );
+      </div>
+    </footer>
+  );
 };
+
 export default Footer;

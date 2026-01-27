@@ -2,14 +2,16 @@ import { useForm } from "react-hook-form";
 import {
   PaymentIntentResponse,
   UserType,
-} from "../../../../backend/src/shared/types";
+} from "../../../../../backend/src/shared/types";
+
+
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { StripeCardElement } from "@stripe/stripe-js";
-import { useSearchContext } from "../../contexts/SearchContext";
+import { useSearchContext } from "../../../contexts/SearchContext";
 import { useParams } from "react-router-dom";
 import { useMutation } from "react-query";
-import * as apiClient from "../../api-client";
-import { useAppContext } from "../../contexts/AppContext";
+import * as apiClient from "../../../api-client";
+import { useAppContext } from "../../../contexts/AppContext";
 
 type Props = {
   currentUser: UserType;
@@ -38,17 +40,18 @@ const BookingForm = ({ currentUser, paymentIntent }: Props) => {
 
   const { showToast } = useAppContext();
 
-  const { mutate: bookRoom, isLoading } = useMutation(
-    apiClient.createRoomBooking,
-    {
-      onSuccess: () => {
-        showToast({ message: "Booking Saved!", type: "SUCCESS" });
-      },
-      onError: () => {
-        showToast({ message: "Error saving booking", type: "ERROR" });
-      },
-    }
-  );
+ const { mutate: bookRoom, isLoading } = useMutation(
+  (data: BookingFormData) => apiClient.createRoomBooking(data),
+  {
+    onSuccess: () => {
+      showToast({ message: "Booking Saved!", type: "SUCCESS" });
+    },
+    onError: () => {
+      showToast({ message: "Error saving booking", type: "ERROR" });
+    },
+  }
+);
+
 
   const { handleSubmit, register } = useForm<BookingFormData>({
     defaultValues: {

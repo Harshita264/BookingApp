@@ -1,45 +1,67 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Toast from "../components/Toast";
-import { useQuery } from "react-query";
 import * as apiClient from "../api-client";
-import { loadStripe, Stripe } from "@stripe/stripe-js";
-
-const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || "";
 
 type ToastMessage = {
   message: string;
   type: "SUCCESS" | "ERROR";
 };
 
-type AppContext = {
-  showToast: (toastMessage: ToastMessage) => void;
+type AppContextType = {
   isLoggedIn: boolean;
-  stripePromise: Promise<Stripe | null>;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  showToast: (toastMessage: ToastMessage) => void;
+  logout: () => Promise<void>;
 };
 
-const AppContext = React.createContext<AppContext | undefined>(undefined);
-
-const stripePromise = loadStripe(STRIPE_PUB_KEY);
+const AppContext = React.createContext<AppContextType | undefined>(undefined);
 
 export const AppContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [toast, setToast] = useState<ToastMessage | undefined>(undefined);
+  const [toast, setToast] = useState<ToastMessage | undefined>();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  // 🔑 AUTH CHECK (ONCE)
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await apiClient.validateToken();
+        setIsLoggedIn(true);
+      } catch {
+        setIsLoggedIn(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const { isError } = useQuery("validateToken", apiClient.validateToken, {
-    retry: false,
-  });
+    checkAuth();
+  }, []);
+
+  // ✅ LOGOUT HANDLER
+  const logout = async () => {
+    await apiClient.logout();
+    setIsLoggedIn(false);
+  };
+
+  const showToast = (toastMessage: ToastMessage) => {
+    setToast(toastMessage);
+  };
+
+  if(isLoading) {
+    return null;
+  }
+
 
   return (
     <AppContext.Provider
       value={{
-        showToast: (toastMessage) => {
-          setToast(toastMessage);
-        },
-        isLoggedIn: !isError,
-        stripePromise,
+        isLoggedIn,
+        setIsLoggedIn,
+        showToast,
+        logout,
       }}
     >
       {toast && (
@@ -56,5 +78,8 @@ export const AppContextProvider = ({
 
 export const useAppContext = () => {
   const context = useContext(AppContext);
-  return context as AppContext;
+  if (!context) {
+    throw new Error("useAppContext must be used within AppContextProvider");
+  }
+  return context;
 };
