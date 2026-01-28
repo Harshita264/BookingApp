@@ -53,7 +53,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: "http://localhost:5173",   // ✅ IMPORTANT
+    origin: process.env.FRONTEND_URL,   // ✅ IMPORTANT
     credentials: true,      // ✅ REQUIRED FOR COOKIES
   })
 );

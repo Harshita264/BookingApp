@@ -49,7 +49,7 @@ router.post(
       res.cookie("auth_token", token, {
         httpOnly: true,
         secure: false,
-        sameSite: "lax",
+        sameSite: "none",
         path: "/",
       });
 
