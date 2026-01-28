@@ -9,7 +9,6 @@ import { useSearchContext } from "../contexts/SearchContext";
 import { useAppContext } from "../contexts/AppContext";
 
 import BookingDetailsSummary from "../components/BookingDetailsSummary";
-import BookingForm from "../forms/ManageHotelForm/BookingForm/BookingForm";
 
 const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string
@@ -81,7 +80,7 @@ const Booking = () => {
       />
 
       <Elements stripe={stripePromise}>
-        <BookingForm />
+        <div>Booking feature coming soon</div>
       </Elements>
     </div>
   );

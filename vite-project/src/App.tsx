@@ -15,7 +15,6 @@ import MyHotels from "./pages/MyHotels";
 import EditHotel from "./pages/EditHotel";
 import Booking from "./pages/Booking";
 import MyBookings from "./pages/MyBookings";
-import NotFound from "./pages/NotFound";
 import "react-datepicker/dist/react-datepicker.css";
 
 const App = () => {
