@@ -1,5 +1,4 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "https://bookingapp-gqkh.onrender.com";
+const API_BASE_URL ="https://bookingapp-gqkh.onrender.com";
 
 
 import { RegisterFormData } from "./pages/Register";
