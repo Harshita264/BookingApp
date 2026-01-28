@@ -1,5 +1,4 @@
-const API_BASE_URL ="https://bookingapp-gqkh.onrender.com";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
@@ -30,7 +29,7 @@ axios.interceptors.response.use(
 
 export const validateToken = async () => {
   const response = await fetch(
-    "http://localhost:7000/api/auth/validate-token",
+    `${import.meta.env.VITE_API_BASE_URL}/api/auth/validate-token`,
     {
       credentials: "include",
     }
