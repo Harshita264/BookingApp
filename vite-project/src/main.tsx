@@ -9,7 +9,7 @@ import "./index.css";
 import axios from "axios";
 
 /* ---------------- AXIOS CONFIG ---------------- */
-axios.defaults.baseURL = "http://localhost:7000/api";
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
 
 const queryClient = new QueryClient();
