@@ -30,7 +30,7 @@ axios.interceptors.response.use(
 
 export const validateToken = async () => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}/api/auth/validate-token`,
+    `${API_BASE_URL}/auth/validate-token`,
     {
       credentials: "include",
     }
