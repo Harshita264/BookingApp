@@ -65,16 +65,6 @@ app.use("/api/my-hotels", myHotelRoutes);
 app.use("/api/hotels", hotelRoutes);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 app.use("/api/my-bookings", bookingRoutes);
 
-/* ---------------- Serve Frontend ---------------- */
-if (process.env.NODE_ENV === "production") {
-  const frontendDistPath = path.join(__dirname, "../../vite-project/dist");
-
-  app.use(express.static(frontendDistPath));
-
-  app.get("*", (_req: Request, res: Response) => {
-    res.sendFile(path.join(frontendDistPath, "index.html"));
-  });
-}
 
 const PORT = 7000;
 app.listen(PORT, () => {
