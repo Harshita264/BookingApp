@@ -49,11 +49,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://booking-bmhkwys2q-harshita264s-projects.vercel.app",
-    ],
-    credentials: true,
+    origin: true,        // ✅ reflect request origin automatically
+    credentials: true,   // ✅ allow cookies
   })
 );
 
