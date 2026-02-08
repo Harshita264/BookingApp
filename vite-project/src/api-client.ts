@@ -1,5 +1,3 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
 import {
@@ -9,8 +7,11 @@ import {
 import { BookingFormData} from "./forms/ManageHotelForm/BookingForm/BookingForm";
 import axios from "axios";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api`;
+
+axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.withCredentials = true;
+
 
 axios.interceptors.response.use(
   (response) => response,
