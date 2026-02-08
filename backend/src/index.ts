@@ -24,10 +24,6 @@ if (!MONGODB_CONNECTION_STRING) {
   throw new Error("MONGODB_CONNECTION_STRING is not defined");
 }
 
-if (!FRONTEND_URL) {
-  throw new Error("FRONTEND_URL is not defined");
-}
-
 /* ---------------- Cloudinary ---------------- */
 cloudinary.config({
   cloud_name: CLOUDINARY_CLOUD_NAME,
@@ -54,7 +50,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: [
-      process.env.FRONTEND_URL!,
+      "http://localhost:5173",
+      "https://booking-bmhkwys2q-harshita264s-projects.vercel.app",
     ],
     credentials: true,
   })
