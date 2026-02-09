@@ -98,7 +98,7 @@ export const signOut = async () => {
 };
 
 export const logout = async () => {
-  await fetch("/auth/logout", {
+  await fetch(`${API_BASE_URL}/auth/logout`, {
     method: "POST",
     credentials: "include",
   });
@@ -133,7 +133,7 @@ export const fetchHotelById = async (hotelId: string): Promise<HotelType> => {
 
 export const deleteHotel = async (hotelId: string) => {
   const response = await fetch(
-    `${API_BASE_URL}/api/my-hotels/${hotelId}`,
+    `${API_BASE_URL}/my-hotels/${hotelId}`,
     {
       method: "DELETE",
       credentials: "include",
@@ -157,7 +157,7 @@ export const searchHotels = async (
   const queryParams = new URLSearchParams(searchParams as any);
 
   const response = await fetch(
-    `${API_BASE_URL}/api/hotels/search?${queryParams.toString()}`
+    `${API_BASE_URL}/hotels/search?${queryParams.toString()}`
   );
 
   if (!response.ok) {
