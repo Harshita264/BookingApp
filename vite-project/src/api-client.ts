@@ -170,5 +170,5 @@ export const searchHotels = async (
 export const createRoomBooking = async (
   bookingData: BookingFormData
 ) => {
-  await axios.post("/api/bookings", bookingData);
+  await axios.post("/bookings", bookingData);
 };
