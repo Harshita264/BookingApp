@@ -9,6 +9,7 @@ type ToastMessage = {
 
 type AppContextType = {
   isLoggedIn: boolean;
+  isLoading: boolean;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   showToast: (toastMessage: ToastMessage) => void;
   logout: () => Promise<void>;
@@ -59,6 +60,7 @@ export const AppContextProvider = ({
     <AppContext.Provider
       value={{
         isLoggedIn,
+        isLoading,
         setIsLoggedIn,
         showToast,
         logout,

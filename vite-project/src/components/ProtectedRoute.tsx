@@ -2,8 +2,12 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 
 const ProtectedRoute = () => {
-  const { isLoggedIn } = useAppContext();
+  const { isLoggedIn, isLoading } = useAppContext();
   const location = useLocation();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!isLoggedIn) {
     return (
