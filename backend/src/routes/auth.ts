@@ -48,7 +48,7 @@ router.post(
 
       res.cookie("auth_token", token, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: "none",
         path: "/",
       });
@@ -87,10 +87,9 @@ router.post("/login", async (req: Request, res: Response) => {
 
     res.cookie("auth_token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       path: "/",
-      maxAge: 86400000,
     });
 
     return res.status(200).json({ userId: user.id });
@@ -109,9 +108,10 @@ router.get("/validate-token", verifyToken, (req: Request, res: Response) => {
 router.post("/logout", (_req: Request, res: Response) => {
   res.cookie("auth_token", "", {
     httpOnly: true,
-    secure: false,
-    sameSite: "strict",
+    secure: true,
+    sameSite: "none",
     expires: new Date(0),
+    path: "/",
   });
   res.sendStatus(200);
 });

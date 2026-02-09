@@ -49,8 +49,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: true,        // ✅ reflect request origin automatically
-    credentials: true,   // ✅ allow cookies
+    origin: "https://booking-app-chi-bice.vercel.app",      
+    credentials: true,   
   })
 );
 
