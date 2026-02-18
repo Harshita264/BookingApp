@@ -5,6 +5,9 @@ Users can register, log in, browse hotels, view hotel details, select booking da
 
 This project focuses on real-world frontend and backend integration including authentication, protected routes, hotel management, image uploads, and booking flow.
 
+🚀 Live Demo: https://booking-app-chi-bice.vercel.app/
+
+
 ---
 
 ## 🚀 Features
