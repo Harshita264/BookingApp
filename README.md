@@ -98,7 +98,3 @@ This project focuses on real-world frontend and backend integration including au
 - Improved UI/UX
 - Mobile responsiveness
 
----
-
-⭐ If you find this project useful, feel free to star the repository!
-
